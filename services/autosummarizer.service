@@ -1,0 +1,14 @@
+[Unit]
+Description=autosummarizer bot
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root/autosummarizer
+ExecStart=npm start
+TimeoutStartSec=0
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=default.target
