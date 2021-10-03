@@ -69,7 +69,7 @@ export const getSummaries = async (posts) => {
       }
     }
     catch (error) {
-      process.stderr.write(error);
+      console.error(error);
     }
   }
 
@@ -77,21 +77,23 @@ export const getSummaries = async (posts) => {
 }
 
 export const postSummaries = async (posts) => {
+  const output = [];
   for (let i = 0; i < posts.length; i++) {
     try {
       await reddit.post(`/api/comment`, {
         parent: posts[i].name,
         text: posts[i].summary
       });
+      output.push(posts[i]);
     }
     catch (error) {
-      process.stderr.write(error);
+      console.error(error);
     }
     finally {
       continue;
     }
   }
-  return posts;
+  return output;
 }
 
 export const savePosts = async (posts) => {
