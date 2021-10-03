@@ -61,7 +61,7 @@ export const getSummaries = async (posts) => {
       });
       if (resp.data.sm_api_content) {
         const articleText = '>' + resp.data.sm_api_content.replace(/\[BREAK\]/g, '\n\n>');
-        summaries.push({ 
+        summaries.push({
           id: posts[i].data.id,
           error: false,
           name: posts[i].data.name,
