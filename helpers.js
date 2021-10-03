@@ -3,6 +3,7 @@ import Reddit from 'reddit';
 import * as sqlite from 'sqlite';
 import sqlite3 from 'sqlite3';
 import axios from 'axios';
+import fetch from 'node-fetch';
 
 dotenv.config();
 
@@ -52,32 +53,27 @@ export const getSummaries = async (posts) => {
   const summaries = [];
   for (let i = 0; i < posts.length; i++) {
     try {
-      const resp = await axios.get('https://api.smmry.com', {
-        params: {
-          SM_API_KEY: smmyApiKey,
-          SM_URL: posts[i].data.url,
-          SM_WITH_BREAK: undefined
-        }
-      });
-      if (resp.data.sm_api_content) {
-        const articleText = '>' + resp.data.sm_api_content.replace(/\[BREAK\]/g, '\n\n>');
+      const response = await fetch(`https://api.smmry.com?SM_API_KEY=${process.env.SMMRY_API_KEY}&SM_URL=${posts[i].data.url}&SM_WITH_BREAK`);
+      const resp = await response.json();
+      if (resp.sm_api_content) {
+        const articleText = '>' + resp.sm_api_content.replace(/\[BREAK\]/g, '\n\n>');
         summaries.push({
           id: posts[i].data.id,
           error: false,
           name: posts[i].data.name,
-          title: resp.data.sm_api_title,
-          summary: `**Article Summary** (Reduced by ${resp.data.sm_api_content_reduced})\n\n-----\n\n${articleText}\n\n-----\n\nWant to know how I work? Find my source code [here](https://github.com/coolirisme/autosummarizer). Pull Requests are welcome!`,
+          title: resp.sm_api_title,
+          summary: `**Article Summary** (Reduced by ${resp.sm_api_content_reduced})\n\n-----\n\n${articleText}\n\n-----\n\nWant to know how I work? Find my source code [here](https://github.com/coolirisme/autosummarizer). Pull Requests are welcome!`,
         })
-      }
-    }
-    catch (error) {
-      if (error.response) {
+      } else {
         summaries.push({
           id: posts[i].data.id,
           error: true
         })
-        console.error(`${posts[i].data.name} - ${error.response.status} - ${JSON.stringify(error.response.data)}`);
+        console.error(`${posts[i].data.name} - ${response.status} - ${JSON.stringify(resp.sm_api_message)}`);
       }
+    }
+    catch (error) {
+      console.error(error);
     }
   }
 

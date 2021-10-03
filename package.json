@@ -19,8 +19,8 @@
   },
   "homepage": "https://github.com/coolirisme/autosummarizer#readme",
   "dependencies": {
-    "axios": "^0.22.0",
     "dotenv": "^10.0.0",
+    "node-fetch": "^3.0.0",
     "reddit": "^1.2.1",
     "sqlite": "^4.0.23",
     "sqlite3": "^5.0.2"
