@@ -60,7 +60,7 @@ export const getSummaries = async (posts) => {
         }
       });
       if (resp.data.sm_api_content) {
-        const articleText = '>' + resp.data.sm_api_content.replace(/\[BREAK\]/g, '\n\n');
+        const articleText = '>' + resp.data.sm_api_content.replace(/\[BREAK\]/g, '\n\n>');
         summaries.push({ 
           id: posts[i].data.id,
           error: false,
