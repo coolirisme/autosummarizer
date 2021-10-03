@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=/root/autosummarizer
-ExecStart=npm start
+ExecStart=node --experimental-specifier-resolution=node index.js
 TimeoutStartSec=0
 Restart=on-failure
 RestartSec=5s
