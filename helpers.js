@@ -70,7 +70,7 @@ export const getSummaries = async (posts) => {
     }
     catch (error) {
       if (error.response) {
-        console.error(`${error.response.status} - ${error.response.message}`);
+        console.error(`${error.response.status} - ${error.response.data}`);
       }
     }
   }
