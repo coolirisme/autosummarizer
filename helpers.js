@@ -37,7 +37,7 @@ export const filterPosts = async (posts) => {
   posts = posts.filter(x => !x.data.selftext && x.data.post_hint === 'link' && x.data.url && x.data.url.indexOf('reddit.com') === -1);
 
   const filteredPosts = [];
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < posts.length; i++) {
     const query = `SELECT id FROM posts WHERE id="${posts[i].data.id}" LIMIT 1`
     const res = await database.all(query, []);
     if (res.length === 0) {
@@ -64,7 +64,7 @@ export const getSummaries = async (posts) => {
           id: posts[i].data.id,
           name: posts[i].data.name,
           title: resp.data.sm_api_title,
-          summary: `**Article Summary** (Reduced by ${resp.data.sm_api_content_reduced})\n\n${resp.data.sm_api_content.replace(/\[BREAK\]/g, '\n\n')}`,
+          summary: `**Article Summary** (Reduced by ${resp.data.sm_api_content_reduced})\n\n-----\n\n${resp.data.sm_api_content.replace(/\[BREAK\]/g, '\n\n')}\n\n-----\n\nWant to know how I work? Find my source code [here](https://github.com/coolirisme/autosummarizer). Pull Requests are welcome!`,
         })
       }
     }
@@ -93,6 +93,7 @@ export const postSummaries = async (posts) => {
       continue;
     }
   }
+  
   return output;
 }
 
