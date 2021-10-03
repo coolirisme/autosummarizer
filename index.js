@@ -6,7 +6,7 @@ const run = async () => {
   console.log(`Ran ${++runCount} time(s)`);
 
   await initTables();
-  const res = await getPosts('FreeKarma4U', 'new');
+  const res = await getPosts('anime_titties', 'new');
   const posts = await filterPosts(res);
   const summaries = await getSummaries(posts);
   const repliedPosts = await postSummaries(summaries);
