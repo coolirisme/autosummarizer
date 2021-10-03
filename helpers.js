@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 import Reddit from 'reddit';
 import * as sqlite from 'sqlite';
 import sqlite3 from 'sqlite3';
-import axios from 'axios';
 import fetch from 'node-fetch';
 
 dotenv.config();
