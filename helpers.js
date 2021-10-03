@@ -60,12 +60,13 @@ export const getSummaries = async (posts) => {
         }
       });
       if (resp.data.sm_api_content) {
-        summaries.push({
+        const articleText = '>' + resp.data.sm_api_content.replace(/\[BREAK\]/g, '\n\n');
+        summaries.push({ 
           id: posts[i].data.id,
           error: false,
           name: posts[i].data.name,
           title: resp.data.sm_api_title,
-          summary: `**Article Summary** (Reduced by ${resp.data.sm_api_content_reduced})\n\n-----\n\n${resp.data.sm_api_content.replace(/\[BREAK\]/g, '\n\n')}\n\n-----\n\nWant to know how I work? Find my source code [here](https://github.com/coolirisme/autosummarizer). Pull Requests are welcome!`,
+          summary: `**Article Summary** (Reduced by ${resp.data.sm_api_content_reduced})\n\n-----\n\n${articleText}\n\n-----\n\nWant to know how I work? Find my source code [here](https://github.com/coolirisme/autosummarizer). Pull Requests are welcome!`,
         })
       }
     }
