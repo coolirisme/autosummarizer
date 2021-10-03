@@ -62,6 +62,7 @@ export const getSummaries = async (posts) => {
       if (resp.data.sm_api_content) {
         summaries.push({
           id: posts[i].data.id,
+          error: false,
           name: posts[i].data.name,
           title: resp.data.sm_api_title,
           summary: `**Article Summary** (Reduced by ${resp.data.sm_api_content_reduced})\n\n-----\n\n${resp.data.sm_api_content.replace(/\[BREAK\]/g, '\n\n')}\n\n-----\n\nWant to know how I work? Find my source code [here](https://github.com/coolirisme/autosummarizer). Pull Requests are welcome!`,
@@ -70,7 +71,11 @@ export const getSummaries = async (posts) => {
     }
     catch (error) {
       if (error.response) {
-        console.error(`${error.response.status} - ${JSON.stringify(error.response.data)}`);
+        summaries.push({
+          id: posts[i].data.id,
+          error: true
+        })
+        console.error(`${posts[i].data.name} - ${error.response.status} - ${JSON.stringify(error.response.data)}`);
       }
     }
   }
@@ -82,10 +87,12 @@ export const postSummaries = async (posts) => {
   const output = [];
   for (let i = 0; i < posts.length; i++) {
     try {
-      await reddit.post(`/api/comment`, {
-        parent: posts[i].name,
-        text: posts[i].summary
-      });
+      if (!posts[i].error) {
+        await reddit.post(`/api/comment`, {
+          parent: posts[i].name,
+          text: posts[i].summary
+        });
+      }
       output.push(posts[i]);
     }
     catch (error) {
